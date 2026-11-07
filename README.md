@@ -154,7 +154,7 @@ uv run python usecases/tsp_qaoa.py --help        # options differ per script
 Every use case accepts `--shots`, `--noise`, `--seed` and `--out`. To generate all reports:
 
 ```bash
-for f in experiments/*.py usecases/[!_]*.py; do uv run python "$f"; done
+for f in experiments/*.py usecases/[^_]*.py; do uv run python "$f"; done
 ```
 
 ## Reports
