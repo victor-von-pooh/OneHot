@@ -15,11 +15,12 @@ The results are written to outputs/usecases/graph_coloring_qaoa/index.html.
 
 Examples
 --------
-uv run python usecases/graph_coloring_qaoa.py
-uv run python usecases/graph_coloring_qaoa.py --graph cycle4 --depth 4
-uv run python usecases/graph_coloring_qaoa.py --graph triangle --colors 3 --restarts 6
+uv run python usecases/graph_coloring_qaoa/main.py
+uv run python usecases/graph_coloring_qaoa/main.py --graph cycle4 --depth 4
+uv run python usecases/graph_coloring_qaoa/main.py --graph triangle --colors 3 --restarts 6
 """
 
+import sys
 import time
 from pathlib import Path
 
@@ -27,10 +28,15 @@ import numpy as np
 import plotly.graph_objects as go
 from qiskit import QuantumCircuit, transpile
 
-from _common import base_parser, sample
-from _qaoa import Qubo, Run, Variant, cost_scale, optimize, qaoa_circuit
 from onehot import w_state
 from onehot.report import HTML, Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser, sample  # noqa: E402
+from usecases.shared.qaoa import Qubo, Run, Variant, cost_scale, optimize, qaoa_circuit  # noqa: E402
+
 
 GRAPHS = {
     "triangle": ([(0, 1), (1, 2), (0, 2)], [(0.0, 1.0), (-0.87, -0.5), (0.87, -0.5)]),

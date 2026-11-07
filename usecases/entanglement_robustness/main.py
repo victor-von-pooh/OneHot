@@ -11,19 +11,25 @@ outputs/usecases/entanglement_robustness/index.html.
 
 Examples
 --------
-uv run python usecases/entanglement_robustness.py
-uv run python usecases/entanglement_robustness.py --qubits 6 --sweep 3-10
+uv run python usecases/entanglement_robustness/main.py
+uv run python usecases/entanglement_robustness/main.py --qubits 6 --sweep 3-10
 """
 
+import sys
 from pathlib import Path
 
 import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector, concurrence, entropy, negativity, partial_trace, state_fidelity
 
-from _common import base_parser
 from onehot import w_state
 from onehot.report import Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser  # noqa: E402
+
 
 W_COLOR = charts.SERIES[0]
 GHZ_COLOR = charts.SERIES[1]

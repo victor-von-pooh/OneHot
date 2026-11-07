@@ -9,12 +9,14 @@ each marked qubit. This script compares that search with standard Grover over
 
 Examples
 --------
-uv run python usecases/grover_one_hot.py
-uv run python usecases/grover_one_hot.py --items 12 --marked 3,5
-uv run python usecases/grover_one_hot.py --items 6 --marked 0 --method linear
+uv run python usecases/grover_one_hot/main.py
+uv run python usecases/grover_one_hot/main.py --items 12 --marked 3,5
+uv run python usecases/grover_one_hot/main.py --items 6 --marked 0 --method linear
 """
 
 import math
+import sys
+from pathlib import Path
 
 import numpy as np
 import plotly.graph_objects as go
@@ -22,9 +24,14 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.circuit.library import ZGate
 from qiskit.quantum_info import Statevector
 
-from _common import base_parser, one_hot_index, sample
 from onehot import w_state
 from onehot.report import HTML, Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser, one_hot_index, sample  # noqa: E402
+
 
 BASIS = ["cx", "rz", "sx", "x"]
 

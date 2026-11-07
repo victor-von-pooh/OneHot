@@ -18,12 +18,13 @@ outputs/usecases/tsp_qaoa/index.html.
 
 Examples
 --------
-uv run python usecases/tsp_qaoa.py
-uv run python usecases/tsp_qaoa.py --cities 4 --depth 4 --restarts 6
-uv run python usecases/tsp_qaoa.py --input data/tsp.txt
+uv run python usecases/tsp_qaoa/main.py
+uv run python usecases/tsp_qaoa/main.py --cities 4 --depth 4 --restarts 6
+uv run python usecases/tsp_qaoa/main.py --input data/tsp.txt
 """
 
 import itertools
+import sys
 import time
 from pathlib import Path
 
@@ -37,10 +38,15 @@ from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit_optimization.minimum_eigensolvers import QAOA
 from qiskit_optimization.optimizers import COBYLA
 
-from _common import base_parser, sample
-from _qaoa import Qubo, Run, Variant, cost_scale, optimize, qaoa_circuit
 from onehot import w_state
 from onehot.report import HTML, Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser, sample  # noqa: E402
+from usecases.shared.qaoa import Qubo, Run, Variant, cost_scale, optimize, qaoa_circuit  # noqa: E402
+
 
 QISKIT_OPTIMIZATION_SNIPPET = """\
 qp = QuadraticProgram("TSP")                      # x_i_t for cities/times 1..N-1

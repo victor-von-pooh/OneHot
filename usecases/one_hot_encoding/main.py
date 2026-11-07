@@ -11,22 +11,29 @@ outputs/usecases/one_hot_encoding/index.html.
 
 Examples
 --------
-uv run python usecases/one_hot_encoding.py
-uv run python usecases/one_hot_encoding.py --rows 4 --cols 3
-uv run python usecases/one_hot_encoding.py --rows 3 --cols 5 --method linear
+uv run python usecases/one_hot_encoding/main.py
+uv run python usecases/one_hot_encoding/main.py --rows 4 --cols 3
+uv run python usecases/one_hot_encoding/main.py --rows 3 --cols 5 --method linear
 """
 
 import math
+import sys
 from itertools import product
+from pathlib import Path
 
 import numpy as np
 import plotly.graph_objects as go
 from qiskit import QuantumCircuit, transpile
 from scipy.stats import chisquare
 
-from _common import base_parser, one_hot_index, sample
 from onehot import w_state
 from onehot.report import HTML, Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser, one_hot_index, sample  # noqa: E402
+
 
 BASIS = ["cx", "rz", "sx", "x"]
 

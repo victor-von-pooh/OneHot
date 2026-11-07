@@ -12,13 +12,15 @@ outputs/usecases/single_excitation_walk/index.html.
 
 Examples
 --------
-uv run python usecases/single_excitation_walk.py
-uv run python usecases/single_excitation_walk.py --sites 6 --time 6
-uv run python usecases/single_excitation_walk.py --dt 0.02 --noise 0.005
+uv run python usecases/single_excitation_walk/main.py
+uv run python usecases/single_excitation_walk/main.py --sites 6 --time 6
+uv run python usecases/single_excitation_walk/main.py --dt 0.02 --noise 0.005
 """
 
 import math
+import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 
 import numpy as np
 import plotly.graph_objects as go
@@ -28,9 +30,13 @@ from qiskit import QuantumCircuit
 from qiskit.circuit.library import XXPlusYYGate
 from qiskit.quantum_info import Statevector
 
-from _common import base_parser, one_hot_index, sample
 from onehot import w_state
 from onehot.report import HTML, Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser, one_hot_index, sample  # noqa: E402
 
 
 @dataclass

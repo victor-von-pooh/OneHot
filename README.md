@@ -133,28 +133,31 @@ much of the state survives in the one-hot subspace under noise.
 
 ## Use cases
 
-Each script builds a circuit on top of `w_state` and writes its own report.
+Each use case lives in its own directory under [`usecases/`](usecases/), with a `main.py` that
+runs it and a `README.md` that explains what it is and what running it produces. See
+[`usecases/README.md`](usecases/README.md) for the overview.
 
-| Script | What it shows |
+| Use case | What it shows |
 |---|---|
-| `usecases/leader_election.py` | Elect exactly one of n parties fairly |
-| `usecases/fair_dice.py` | Roll an n-sided die (n need not be a power of two) without rejection |
-| `usecases/entanglement_robustness.py` | Why W-state entanglement survives losing a qubit while GHZ does not |
-| `usecases/grover_one_hot.py` | Grover search restricted to the n one-hot states |
-| `usecases/single_excitation_walk.py` | One excitation moving through a chain: quantum walk and state transfer |
-| `usecases/one_hot_encoding.py` | One W state per row gives every "exactly one per row" assignment |
-| `usecases/graph_coloring_qaoa.py` | Graph colouring with QAOA, W initial states and an XY mixer |
-| `usecases/tsp_qaoa.py` | The travelling salesman problem with QAOA and a W-state initial state |
+| [leader_election](usecases/leader_election/) | Elect exactly one of n parties fairly |
+| [fair_dice](usecases/fair_dice/) | Roll an n-sided die (n need not be a power of two) without rejection |
+| [entanglement_robustness](usecases/entanglement_robustness/) | Why W-state entanglement survives losing a qubit while GHZ does not |
+| [grover_one_hot](usecases/grover_one_hot/) | Grover search restricted to the n one-hot states |
+| [single_excitation_walk](usecases/single_excitation_walk/) | One excitation moving through qubits: quantum walk and state transfer |
+| [one_hot_encoding](usecases/one_hot_encoding/) | One W state per row gives every "exactly one per row" assignment |
+| [graph_coloring_qaoa](usecases/graph_coloring_qaoa/) | Graph colouring with QAOA, W-state starts and an XY mixer |
+| [tsp_qaoa](usecases/tsp_qaoa/) | The travelling salesman problem with QAOA and W-state starts |
 
 ```bash
-uv run python usecases/leader_election.py
-uv run python usecases/tsp_qaoa.py --help        # options differ per script
+uv run python usecases/leader_election/main.py
+uv run python usecases/tsp_qaoa/main.py --help     # options differ per use case
 ```
 
-Every use case accepts `--shots`, `--noise`, `--seed` and `--out`. To generate all reports:
+Every use case accepts `--shots`, `--noise`, `--seed` and `--out`. To generate every report
+(works in both bash and zsh):
 
 ```bash
-for f in experiments/*.py usecases/[^_]*.py; do uv run python "$f"; done
+for f in experiments/*.py usecases/*/main.py; do uv run python "$f"; done
 ```
 
 ## Reports
@@ -186,9 +189,9 @@ OneHot/
 ├── experiments/
 │   └── w_state_scaling.py
 └── usecases/
-    ├── _common.py          # shared CLI options, sampling and noise helpers
-    ├── _qaoa.py            # shared QAOA helpers for the optimisation use cases
-    └── *.py                # one script per use case
+    ├── README.md           # overview of the use cases
+    ├── shared/             # helpers shared by the use cases (options, sampling, QAOA)
+    └── <name>/             # one directory per use case: main.py + README.md
 ```
 
 ## Maintaining the project with uv

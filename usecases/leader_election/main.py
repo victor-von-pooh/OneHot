@@ -10,20 +10,25 @@ outputs/usecases/leader_election/index.html.
 
 Examples
 --------
-uv run python usecases/leader_election.py
-uv run python usecases/leader_election.py --parties 7 --sweep 2-14
-uv run python usecases/leader_election.py --noise 0.005 --method linear
+uv run python usecases/leader_election/main.py
+uv run python usecases/leader_election/main.py --parties 7 --sweep 2-14
+uv run python usecases/leader_election/main.py --noise 0.005 --method linear
 """
 
+import sys
 from pathlib import Path
 
 import numpy as np
 from qiskit import QuantumCircuit
 from scipy.stats import chisquare
 
-from _common import base_parser, one_hot_index, sample
 from onehot import w_state
 from onehot.report import Page, Stat, charts
+
+# Make the repository root importable so that usecases.shared resolves when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from usecases.shared.common import base_parser, one_hot_index, sample  # noqa: E402
 
 
 def parse_range(text: str) -> list[int]:
